@@ -29,7 +29,7 @@ R = [1 0 0;
      0 1 0;
      0 0 1];#should be a 3x3 identity matrix
 x₀ = [10, 10, 10, 1, 1, 1]
-N = 1000
+N = 6500
 dim_x = size(A,1)
 dim_u = size(R,1)
 
@@ -88,7 +88,7 @@ function trajectory(A, B, x₀, us, N)
      Fixed by simply setting expression as an anonymous functon; func(....) or func = t -> ..... =# 
 #establish each section of the matrix
  #xdot=🏥*x₀
-#xdots = []
+xdots = []
 function cl_eqs(N,n,x₀)
      for i in 1:N
           t = i
@@ -108,8 +108,8 @@ function cl_eqs(N,n,x₀)
           -2*sin(n*t) (4*cos(n*t) - 3) 0;
           0 0 cos(n*t)];
           #ϕ1= setindex!(ϕ,[ϕrr ϕrv;ϕvr ϕvv])
-          xdot = [ϕrr ϕrv;ϕvr ϕvv]*x₀;
-          push!(xdots,xdot)
+          #xdot = [ϕrr ϕrv;ϕvr ϕvv]*x₀;
+          push!(xdots,[ϕrr ϕrv;ϕvr ϕvv]*x₀)
      end
      return xdots
 end
@@ -117,4 +117,4 @@ xdots = cl_eqs(N,n,x₀)
 #println(xdots)
 println(size(xdots,1))
 
-plot3d(first.(xdots),getindex.(xdots,2),getindex.(xdots,3))
+plot3d(first.(xdots),getindex.(xdots,2),getindex.(xdots,3),xlabel="x",ylabel="y",zlabel="z",camera=(45,45,0))
